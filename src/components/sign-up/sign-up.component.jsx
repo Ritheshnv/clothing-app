@@ -53,15 +53,15 @@ class SignUp extends React.Component {
     render() {
         const { displayName, email, password, confirmPassword } = this.state;
         return (
-            <div className='sign-up'>
-                <h2 className='title'>I do not have a account</h2>
-                <span>Sign up with your email and password</span>
-                <form className='sign-up-form' onSubmit={this.handleSubmit}>
+            <div className='bg-white p-6 rounded-lg shadow-sm'>
+                <h2 className='text-2xl font-bold text-gray-900 mb-2'>I do not have an account</h2>
+                <p className='text-gray-600 mb-6'>Sign up with your email and password</p>
+                <form className='space-y-4' onSubmit={this.handleSubmit}>
                     <FormInput
                         type='text'
                         value={displayName}
                         name='displayName'
-                        onChange={this.handleChange}
+                        handleChange={this.handleChange}
                         label='Display Name'
                         required
                     />
@@ -69,7 +69,7 @@ class SignUp extends React.Component {
                         type='email'
                         value={email}
                         name='email'
-                        onChange={this.handleChange}
+                        handleChange={this.handleChange}
                         label='Email'
                         required
                     />
@@ -77,7 +77,7 @@ class SignUp extends React.Component {
                         type='password'
                         value={password}
                         name='password'
-                        onChange={this.handleChange}
+                        handleChange={this.handleChange}
                         label='Password'
                         required
                     />
@@ -85,11 +85,13 @@ class SignUp extends React.Component {
                         type='password'
                         value={confirmPassword}
                         name='confirmPassword'
-                        onChange={this.handleChange}
+                        handleChange={this.handleChange}
                         label='Confirm Password'
                         required
                     />
-                    <CustomButton type='submit'>SIGN UP</CustomButton>
+                    <div className='pt-4'>
+                        <CustomButton type='submit'>SIGN UP</CustomButton>
+                    </div>
                 </form>
             </div>
         )

@@ -8,7 +8,7 @@ import './directory.styles.scss';
 
 const Directory = ({ sections }) => {
     return (
-        <div className="directory-menu">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 py-8">
             {
                 sections.map(({ id, ...otherSectionItems }) => (
                     <MenuItem key={id} {...otherSectionItems} />

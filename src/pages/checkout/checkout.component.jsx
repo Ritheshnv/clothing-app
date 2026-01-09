@@ -7,33 +7,46 @@ import StripCheckoutButton from '../../components/stripe-button/stripe-button.co
 import './checkout.styles.scss';
 
 const CheckoutPage = ({ cartItems, total }) => (
-    <div className='checkout-page'>
-        <div className='checkout-header'>
-            <div className='header-block'>
-                <span>Product</span>
-            </div>
-            <div className='header-block'>
-                <span>Description</span>
-            </div>
-            <div className='header-block'>
-                <span>Product</span>
-            </div>
-            <div className='header-block'>
-                <span>Price</span>
-            </div>
-            <div className='header-block'>
-                <span>Remove</span>
-            </div>
+    <div className='max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8'>
+        <h1 className='text-3xl font-bold text-gray-900 mb-8'>Checkout</h1>
+        
+        {/* Desktop Header */}
+        <div className='hidden md:grid md:grid-cols-5 gap-4 py-4 border-b border-gray-200 mb-6'>
+            <div className='font-medium text-gray-900'>Product</div>
+            <div className='font-medium text-gray-900'>Description</div>
+            <div className='font-medium text-gray-900'>Quantity</div>
+            <div className='font-medium text-gray-900'>Price</div>
+            <div className='font-medium text-gray-900'>Remove</div>
         </div>
-        {
-            cartItems.map(cartItem =>
-                <CheckoutItem key={cartItem.id} cartItem={cartItem} />
-            )
-        }
-        <div className='total'>
-            <span>TOTAL: ${total}</span>
+        
+        <div className='space-y-4 mb-8'>
+            {
+                cartItems.length ? (
+                    cartItems.map(cartItem =>
+                        <CheckoutItem key={cartItem.id} cartItem={cartItem} />
+                    )
+                ) : (
+                    <div className='text-center py-12'>
+                        <p className='text-gray-500 text-lg'>Your cart is empty</p>
+                    </div>
+                )
+            }
         </div>
-        <StripCheckoutButton price={total} />
+        
+        {cartItems.length > 0 && (
+            <div className='border-t border-gray-200 pt-6'>
+                <div className='flex justify-end mb-6'>
+                    <div className='text-2xl font-bold text-gray-900'>
+                        TOTAL: ${total}
+                    </div>
+                </div>
+                <div className='flex justify-end'>
+                    <div className='w-full max-w-xs'>
+                        <StripCheckoutButton price={total} />
+                    </div>
+                </div>
+            </div>
+        )}
     </div>
 );
 

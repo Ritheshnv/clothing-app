@@ -40,18 +40,20 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="min-h-screen bg-gray-50">
         <Header />
-        <Switch>
-          <Route exact path='/' component={HomePage} />
-          <Route path='/shop' component={ShopPage} />
-          <Route exact path='/checkout' component={CheckoutPage} />
-          <Route exact path='/signin'
-            render={() => this.props.currentUser ?
-              (<Redirect to='/' />)
-              :
-              <SignInSignUpPage />} />
-        </Switch>
+        <main className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <Switch>
+            <Route exact path='/' component={HomePage} />
+            <Route path='/shop' component={ShopPage} />
+            <Route exact path='/checkout' component={CheckoutPage} />
+            <Route exact path='/signin'
+              render={() => this.props.currentUser ?
+                (<Redirect to='/' />)
+                :
+                <SignInSignUpPage />} />
+          </Switch>
+        </main>
       </div>
     )
   };

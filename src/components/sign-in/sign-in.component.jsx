@@ -33,13 +33,13 @@ class SignIn extends React.Component {
 
     render() {
         return (
-            <div className='sign-in'>
-                <h2>I already have an account</h2>
-                <span>Sign in with your email and password</span>
-                <form onSubmit={this.handleSubmit}>
+            <div className='bg-white p-6 rounded-lg shadow-sm'>
+                <h2 className='text-2xl font-bold text-gray-900 mb-2'>I already have an account</h2>
+                <p className='text-gray-600 mb-6'>Sign in with your email and password</p>
+                <form onSubmit={this.handleSubmit} className='space-y-4'>
                     <FormInput name="email" label="email" type="email" handleChange={this.handleChange} value={this.state.email} required />
                     <FormInput name="password" label="password" type="password" handleChange={this.handleChange} value={this.state.password} required />
-                    <div className='buttons'>
+                    <div className='space-y-3 pt-4'>
                         <CustomButton type='submit'>Sign In</CustomButton>
                         <CustomButton onClick={signInWithGoogle} isGoogleSignIn>Sign In with Google</CustomButton>
                     </div>

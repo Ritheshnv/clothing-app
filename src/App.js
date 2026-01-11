@@ -43,7 +43,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen" style={{backgroundColor: '#FEF8F1'}}>
         <Banner />
         <Header />
         <Carousel />

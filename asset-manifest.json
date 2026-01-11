@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/clothing-app/static/css/main.1f9eb3ff.css",
-    "main.js": "/clothing-app/static/js/main.1fb665ee.js",
+    "main.css": "/clothing-app/static/css/main.6f18a342.css",
+    "main.js": "/clothing-app/static/js/main.df94b950.js",
     "static/media/shopping-bag.svg": "/clothing-app/static/media/shopping-bag.cfde1decc45a06eff1f2a4ec5ae00b01.svg",
     "static/media/crown.svg": "/clothing-app/static/media/crown.3a4e2b15908e7a4c25343677d232b7e6.svg",
     "index.html": "/clothing-app/index.html",
-    "main.1f9eb3ff.css.map": "/clothing-app/static/css/main.1f9eb3ff.css.map",
-    "main.1fb665ee.js.map": "/clothing-app/static/js/main.1fb665ee.js.map"
+    "main.6f18a342.css.map": "/clothing-app/static/css/main.6f18a342.css.map",
+    "main.df94b950.js.map": "/clothing-app/static/js/main.df94b950.js.map"
   },
   "entrypoints": [
-    "static/css/main.1f9eb3ff.css",
-    "static/js/main.1fb665ee.js"
+    "static/css/main.6f18a342.css",
+    "static/js/main.df94b950.js"
   ]
 }

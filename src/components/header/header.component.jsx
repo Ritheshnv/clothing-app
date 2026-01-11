@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { ReactComponent as Logo } from '../../assets/crown.svg';
+import logo from '../../assets/dihana-logo.png';
 import { auth } from '../../firebase/firebase.utils';
 import CartIcon from '../cart-icon/cart-icon.component';
 import CartDropdown from '../cart-dropdown/cart-dropdown.component';
@@ -13,13 +13,13 @@ const Header = ({ currentUser, hidden }) => {
     return (
         <header className='bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50'>
             <div className='container mx-auto px-4 sm:px-6 lg:px-8'>
-                <div className='flex justify-between items-center h-16 md:h-20'>
+                <div className='flex justify-between items-center h-20 md:h-24'>
                     <Link className='flex items-center' to="/">
-                        <Logo className='h-8 w-8 md:h-10 md:w-10' />
+                        <img src={logo} alt='Dihana Logo' className='h-16 w-auto md:h-20' />
                     </Link>
                     <nav className='hidden md:flex items-center space-x-8'>
                         <Link className='text-gray-700 hover:text-gray-900 font-medium transition-colors' to='/shop'>SHOP</Link>
-                        <Link className='text-gray-700 hover:text-gray-900 font-medium transition-colors' to='/shop'>CONTACT</Link>
+                        <Link className='text-gray-700 hover:text-gray-900 font-medium transition-colors' to='/contact'>CONTACT</Link>
                         {currentUser ?
                             <button className='text-gray-700 hover:text-gray-900 font-medium transition-colors' onClick={() => auth.signOut()}>
                                 SIGN OUT
@@ -47,7 +47,7 @@ const Header = ({ currentUser, hidden }) => {
                     <div className='md:hidden pb-4'>
                         <nav className='flex flex-col space-y-2'>
                             <Link className='text-gray-700 hover:text-gray-900 font-medium py-2' to='/shop'>SHOP</Link>
-                            <Link className='text-gray-700 hover:text-gray-900 font-medium py-2' to='/shop'>CONTACT</Link>
+                            <Link className='text-gray-700 hover:text-gray-900 font-medium py-2' to='/contact'>CONTACT</Link>
                             {currentUser ?
                                 <button className='text-gray-700 hover:text-gray-900 font-medium py-2 text-left' onClick={() => auth.signOut()}>
                                     SIGN OUT

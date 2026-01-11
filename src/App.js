@@ -9,6 +9,7 @@ import ContactPage from './pages/contact/contact.component';
 import Banner from './components/banner/banner.component';
 import Header from './components/header/header.component';
 import Carousel from './components/carousel/carousel.component';
+import Footer from './components/footer/footer.component';
 import SignInSignUpPage from './pages/sign-in-sign-up-page/sign-in-sign-up.component';
 import './App.css';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
@@ -60,6 +61,7 @@ class App extends React.Component {
                 <SignInSignUpPage />} />
           </Switch>
         </main>
+        <Footer />
       </div>
     )
   };

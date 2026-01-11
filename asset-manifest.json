@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/clothing-app/static/css/main.6f18a342.css",
-    "main.js": "/clothing-app/static/js/main.df94b950.js",
+    "main.css": "/clothing-app/static/css/main.7871caa5.css",
+    "main.js": "/clothing-app/static/js/main.06d41f28.js",
+    "static/media/dihana-logo.png": "/clothing-app/static/media/dihana-logo.49b5c58ebdbb992e852f.png",
     "static/media/shopping-bag.svg": "/clothing-app/static/media/shopping-bag.cfde1decc45a06eff1f2a4ec5ae00b01.svg",
-    "static/media/crown.svg": "/clothing-app/static/media/crown.3a4e2b15908e7a4c25343677d232b7e6.svg",
     "index.html": "/clothing-app/index.html",
-    "main.6f18a342.css.map": "/clothing-app/static/css/main.6f18a342.css.map",
-    "main.df94b950.js.map": "/clothing-app/static/js/main.df94b950.js.map"
+    "main.7871caa5.css.map": "/clothing-app/static/css/main.7871caa5.css.map",
+    "main.06d41f28.js.map": "/clothing-app/static/js/main.06d41f28.js.map"
   },
   "entrypoints": [
-    "static/css/main.6f18a342.css",
-    "static/js/main.df94b950.js"
+    "static/css/main.7871caa5.css",
+    "static/js/main.06d41f28.js"
   ]
 }

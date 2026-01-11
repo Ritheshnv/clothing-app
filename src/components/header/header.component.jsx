@@ -9,6 +9,15 @@ import './header.styles.scss';
 
 const Header = ({ currentUser, hidden }) => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [searchOpen, setSearchOpen] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
+    
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (searchTerm.trim()) {
+            window.location.href = `/shop?search=${encodeURIComponent(searchTerm)}`;
+        }
+    };
     
     return (
         <header className='shadow-sm border-b border-gray-200 sticky top-0 z-50' style={{backgroundColor: '#FEF8F1'}}>
@@ -19,6 +28,14 @@ const Header = ({ currentUser, hidden }) => {
                             <CartIcon />
                             {hidden ? null : <CartDropdown />}
                         </div>
+                        <button 
+                            className='text-gray-700 hover:text-gray-900 transition-colors'
+                            onClick={() => setSearchOpen(!searchOpen)}
+                        >
+                            <svg className='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' />
+                            </svg>
+                        </button>
                         {currentUser ?
                             <button className='text-gray-700 hover:text-gray-900 font-medium transition-colors' onClick={() => auth.signOut()}>
                                 SIGN OUT
@@ -32,6 +49,14 @@ const Header = ({ currentUser, hidden }) => {
                         <img src={logo} alt='Dihana Logo' className='h-16 w-auto md:h-20' />
                     </Link>
                     <div className='md:hidden flex items-center space-x-4'>
+                        <button 
+                            className='text-gray-700 hover:text-gray-900'
+                            onClick={() => setSearchOpen(!searchOpen)}
+                        >
+                            <svg className='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' />
+                            </svg>
+                        </button>
                         <button className='text-gray-700 hover:text-gray-900' onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
                             <svg className='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
                                 <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M4 6h16M4 12h16M4 18h16' />
@@ -55,6 +80,25 @@ const Header = ({ currentUser, hidden }) => {
                                 <Link className='text-gray-700 hover:text-gray-900 font-medium py-2' to='/signin'>SIGN IN</Link>
                             }
                         </nav>
+                    </div>
+                )}
+                {searchOpen && (
+                    <div className='py-4 border-t border-gray-200'>
+                        <form onSubmit={handleSearch} className='flex'>
+                            <input
+                                type='text'
+                                placeholder='Search products...'
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                className='flex-1 px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-gray-500'
+                            />
+                            <button
+                                type='submit'
+                                className='px-4 py-2 bg-gray-900 text-white rounded-r-md hover:bg-gray-800'
+                            >
+                                Search
+                            </button>
+                        </form>
                     </div>
                 )}
             </div>

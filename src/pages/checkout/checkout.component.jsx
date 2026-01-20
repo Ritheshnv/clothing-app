@@ -37,7 +37,7 @@ const CheckoutPage = ({ cartItems, total }) => (
             <div className='border-t border-gray-200 pt-6'>
                 <div className='flex justify-end mb-6'>
                     <div className='text-2xl font-bold text-gray-900'>
-                        TOTAL: ${total}
+                        TOTAL: ₹{total}
                     </div>
                 </div>
                 <div className='flex justify-end'>

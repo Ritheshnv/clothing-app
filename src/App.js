@@ -61,6 +61,7 @@ class App extends React.Component {
         <main className="mx-auto px-4 sm:px-6 lg:px-8">
           <Switch>
             <Route exact path='/' component={HomePage} />
+            <Route exact path='/clothing-app' render={() => <Redirect to='/' />} />
             <Route path='/shop' component={ShopPage} />
             <Route exact path='/shop/wedding-sarees' component={WeddingSareesPage} />
             <Route exact path='/shop/party-wears' component={PartyWearsPage} />

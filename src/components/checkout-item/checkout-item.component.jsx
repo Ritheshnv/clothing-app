@@ -13,7 +13,7 @@ const CheckoutItem = ({ cartItem, clearItem, addItem, removeItem }) => {
                     <img src={imageUrl} alt='item' className='w-16 h-16 object-cover rounded' />
                     <div className='flex-1'>
                         <h3 className='font-medium text-gray-900'>{name}</h3>
-                        <p className='text-gray-600'>${price}</p>
+                        <p className='text-gray-600'>₹{price}</p>
                     </div>
                     <button 
                         className='text-red-500 hover:text-red-700 p-2'
@@ -40,7 +40,7 @@ const CheckoutItem = ({ cartItem, clearItem, addItem, removeItem }) => {
                             +
                         </button>
                     </div>
-                    <div className='font-bold text-lg'>${price * quantity}</div>
+                    <div className='font-bold text-lg'>₹{price * quantity}</div>
                 </div>
             </div>
             

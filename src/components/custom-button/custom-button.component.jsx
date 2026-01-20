@@ -8,13 +8,13 @@ const CustomButton = ({children, isGoogleSignIn, inverted, ...otherProps}) => {
     if (isGoogleSignIn) {
         buttonClasses += ' bg-blue-600 hover:bg-blue-700 text-white focus:ring-blue-500';
     } else if (inverted) {
-        buttonClasses += ' bg-white border border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white focus:ring-gray-500';
+        buttonClasses += ' border border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white focus:ring-gray-500';
     } else {
         buttonClasses += ' bg-gray-900 hover:bg-gray-800 text-white focus:ring-gray-500';
     }
     
     return (
-        <button className={buttonClasses} {...otherProps}>
+        <button className={buttonClasses} style={{backgroundColor: inverted ? '#FEF8F1' : undefined}} {...otherProps}>
             {children}
         </button>
     )

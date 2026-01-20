@@ -33,7 +33,7 @@ class SignIn extends React.Component {
 
     render() {
         return (
-            <div className='bg-white p-6 rounded-lg shadow-sm'>
+            <div className='p-6 rounded-lg shadow-md' style={{backgroundColor: '#FEF8F1'}}>
                 <h2 className='text-2xl font-bold text-gray-900 mb-2'>I already have an account</h2>
                 <p className='text-gray-600 mb-6'>Sign in with your email and password</p>
                 <form onSubmit={this.handleSubmit} className='space-y-4'>

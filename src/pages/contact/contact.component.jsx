@@ -10,7 +10,7 @@ const ContactPage = () => (
                 <div className='space-y-4'>
                     <div>
                         <h3 className='font-medium text-gray-900'>Address</h3>
-                        <p className='text-gray-600'>123 Fashion Street, Style City, SC 12345</p>
+                        <p className='text-gray-600'>Malleswaram, Bengaluru</p>
                     </div>
                     <div>
                         <h3 className='font-medium text-gray-900'>Phone</h3>
@@ -18,7 +18,7 @@ const ContactPage = () => (
                     </div>
                     <div>
                         <h3 className='font-medium text-gray-900'>Email</h3>
-                        <p className='text-gray-600'>info@clothingstore.com</p>
+                        <p className='text-gray-600'>info@dihanacouture.com</p>
                     </div>
                     <div>
                         <h3 className='font-medium text-gray-900'>Hours</h3>

@@ -50,7 +50,7 @@ const Footer = () => (
             
             <div className='border-t border-gray-800 mt-8 pt-8 text-center'>
                 <p className='text-gray-400 text-sm'>
-                    © 2024 Dihana™. All rights reserved. | Designed with ❤️ for fashion lovers
+                    © 2026 Dihana™. All rights reserved. | Designed with ❤️ for fashion lovers
                 </p>
             </div>
         </div>

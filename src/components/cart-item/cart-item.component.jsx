@@ -7,7 +7,7 @@ const CartItem = ({ item: { imageUrl, price, name, quantity } }) => (
         <img src={imageUrl} alt='item' className='w-12 h-12 object-cover rounded' />
         <div className='flex-1 min-w-0'>
             <p className='text-sm font-medium text-gray-900 truncate'>{name}</p>
-            <p className='text-sm text-gray-500'>{quantity} x ${price}</p>
+            <p className='text-sm text-gray-500'>{quantity} x ₹{price}</p>
         </div>
     </div>
 );

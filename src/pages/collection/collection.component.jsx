@@ -6,6 +6,14 @@ import { connect } from 'react-redux';
 
 
 const CollectionPage = ({ collection }) => {
+    if (!collection) {
+        return (
+            <div className='max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8'>
+                <h2 className='text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center'>Collection not found</h2>
+            </div>
+        );
+    }
+    
     const { title, items } = collection;
     return (
         <div className='max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8'>

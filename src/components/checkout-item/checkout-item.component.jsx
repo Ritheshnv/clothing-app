@@ -65,7 +65,7 @@ const CheckoutItem = ({ cartItem, clearItem, addItem, removeItem }) => {
                         +
                     </button>
                 </div>
-                <div className='font-bold'>${price * quantity}</div>
+                <div className='font-bold'>₹{price * quantity}</div>
                 <div className='flex justify-center'>
                     <button 
                         className='text-red-500 hover:text-red-700 p-2'

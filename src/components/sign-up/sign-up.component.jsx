@@ -53,7 +53,7 @@ class SignUp extends React.Component {
     render() {
         const { displayName, email, password, confirmPassword } = this.state;
         return (
-            <div className='bg-white p-6 rounded-lg shadow-sm'>
+            <div className='p-6 rounded-lg shadow-md' style={{backgroundColor: '#FEF8F1'}}>
                 <h2 className='text-2xl font-bold text-gray-900 mb-2'>I do not have an account</h2>
                 <p className='text-gray-600 mb-6'>Sign up with your email and password</p>
                 <form className='space-y-4' onSubmit={this.handleSubmit}>

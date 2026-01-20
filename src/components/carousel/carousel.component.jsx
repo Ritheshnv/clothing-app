@@ -4,19 +4,19 @@ const Carousel = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const slides = [
         {
-            title: "Summer Collection 2024 - Up to 50% Off",
+            title: "Party Wear",
             image: "https://i.ibb.co/KV18Ysr/floral-skirt.png"
         },
         {
-            title: "New Arrivals - Latest Fashion Trends",
+            title: "Wedding",
             image: "https://i.ibb.co/0s3pdnc/adidas-nmd.png"
         },
         {
-            title: "Free Shipping on Orders Over $100",
+            title: "Reception",
             image: "https://i.ibb.co/XzcwL5s/black-shearling.png"
         },
         {
-            title: "Premium Quality - Affordable Prices",
+            title: "Haldi",
             image: "https://i.ibb.co/ZYW3VTp/brown-brim.png"
         }
     ];
@@ -29,9 +29,9 @@ const Carousel = () => {
     }, [slides.length]);
 
     return (
-        <div className='py-8 flex justify-center'>
-            <div className='w-3/4 bg-white rounded-lg shadow-sm overflow-hidden'>
-                <div className='relative h-64 md:h-80'>
+        <div className='py-8'>
+            <div className='w-full bg-white shadow-sm overflow-hidden'>
+                <div className='relative h-80 md:h-96'>
                     <img 
                         src={slides[currentSlide].image} 
                         alt={slides[currentSlide].title}

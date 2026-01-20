@@ -67,7 +67,7 @@ const Header = ({ currentUser, hidden }) => {
                         </button>
                     </div>
                 </div>
-                <div className='md:hidden fixed top-20 right-4 flex items-center space-x-3 z-40'>
+                <div className='md:hidden absolute right-4 top-1/2 transform -translate-y-1/2 flex items-center space-x-3 z-40'>
                     <div className='relative'>
                         <CartIcon />
                         {hidden ? null : <CartDropdown />}

@@ -32,14 +32,23 @@ class App extends React.Component {
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
-        userRef.onSnapshot(snapshot => {
-          setCurrentUser({
-            id: snapshot.id,
-            ...snapshot.data()
+        if (userRef) {
+          userRef.onSnapshot(snapshot => {
+            setCurrentUser({
+              id: snapshot.id,
+              ...snapshot.data()
+            })
           })
-        })
+        } else {
+          setCurrentUser({
+            id: userAuth.uid,
+            displayName: userAuth.displayName,
+            email: userAuth.email
+          })
+        }
+      } else {
+        setCurrentUser(userAuth);
       }
-      this.setState({ currentUser: userAuth })
     })
   }
 
@@ -56,7 +65,7 @@ class App extends React.Component {
       <div className="min-h-screen" style={{backgroundColor: '#FEF8F1'}}>
         <Banner />
         <Header />
-        {!hideSearchBar && <SearchBar />}
+        {!hideSearchBar && !showCarousel && <SearchBar />}
         {showCarousel && <Carousel />}
         <main className="mx-auto px-4 sm:px-6 lg:px-8">
           <Switch>

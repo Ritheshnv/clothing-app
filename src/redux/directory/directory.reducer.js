@@ -21,14 +21,12 @@ const INITIAL_STATE = {
         {
             title: 'Wedding Flash',
             imageUrl: 'https://i.ibb.co/GCCdy8t/womens.png',
-            size: 'large',
             id: 4,
             linkUrl: 'shop/womens'
         },
         {
             title: 'Party Freak',
             imageUrl: 'https://i.ibb.co/R70vBrQ/men.png',
-            size: 'large',
             id: 5,
             linkUrl: 'shop/mens'
         }

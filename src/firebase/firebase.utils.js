@@ -15,25 +15,31 @@ const config = {
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
     if (!userAuth) return;
-    const userRef = firestore.doc(`users/${userAuth.uid}`);
-    const snapshot = await userRef.get();
+    
+    try {
+        const userRef = firestore.doc(`users/${userAuth.uid}`);
+        const snapshot = await userRef.get();
 
-    if (!snapshot.exists) {
-        const { displayName, email } = userAuth;
-        const createdAt = new Date();
+        if (!snapshot.exists) {
+            const { displayName, email } = userAuth;
+            const createdAt = new Date();
 
-        try {
-            await userRef.set({
-                displayName,
-                email,
-                createdAt,
-                ...additionalData
-            })
-        } catch (error) {
-            console.log('error while storing user', error.message);
+            try {
+                await userRef.set({
+                    displayName,
+                    email,
+                    createdAt,
+                    ...additionalData
+                })
+            } catch (error) {
+                console.log('error while storing user', error.message);
+            }
         }
+        return userRef;
+    } catch (error) {
+        console.log('Firebase permissions error:', error.message);
+        return null;
     }
-    return userRef;
 }
 
 firebase.initializeApp(config);

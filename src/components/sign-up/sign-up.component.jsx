@@ -15,16 +15,30 @@ class SignUp extends React.Component {
             displayName: '',
             email: '',
             password: '',
-            confirmPassword: ''
+            confirmPassword: '',
+            error: '',
+            loading: false
         }
     }
 
     handleSubmit = async event => {
         event.preventDefault();
         const { displayName, email, password, confirmPassword } = this.state;
+        this.setState({ loading: true, error: '' });
 
         if (password !== confirmPassword) {
-            alert("passwords dont match");
+            this.setState({ 
+                error: "Passwords don't match",
+                loading: false 
+            });
+            return;
+        }
+
+        if (password.length < 6) {
+            this.setState({ 
+                error: "Password must be at least 6 characters",
+                loading: false 
+            });
             return;
         }
 
@@ -37,11 +51,15 @@ class SignUp extends React.Component {
                 displayName: '',
                 email: '',
                 password: '',
-                confirmPassword: ''
+                confirmPassword: '',
+                loading: false
             })
 
         } catch (error) {
-            console.log(error);
+            this.setState({ 
+                error: error.message,
+                loading: false 
+            });
         }
     }
 
@@ -51,11 +69,16 @@ class SignUp extends React.Component {
     }
 
     render() {
-        const { displayName, email, password, confirmPassword } = this.state;
+        const { displayName, email, password, confirmPassword, error, loading } = this.state;
         return (
             <div className='p-6 rounded-lg shadow-md' style={{backgroundColor: '#FEF8F1'}}>
                 <h2 className='text-2xl font-bold text-gray-900 mb-2'>I do not have an account</h2>
                 <p className='text-gray-600 mb-6'>Sign up with your email and password</p>
+                {error && (
+                    <div className='mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded'>
+                        {error}
+                    </div>
+                )}
                 <form className='space-y-4' onSubmit={this.handleSubmit}>
                     <FormInput
                         type='text'
@@ -90,7 +113,9 @@ class SignUp extends React.Component {
                         required
                     />
                     <div className='pt-4'>
-                        <CustomButton type='submit'>SIGN UP</CustomButton>
+                        <CustomButton type='submit' disabled={loading}>
+                            {loading ? 'Creating Account...' : 'SIGN UP'}
+                        </CustomButton>
                     </div>
                 </form>
             </div>

@@ -9,12 +9,16 @@ import ProductDetailPage from './pages/product-detail/product-detail.component';
 import WeddingSareesPage from './pages/wedding-sarees/wedding-sarees.component';
 import PartyWearsPage from './pages/party-wears/party-wears.component';
 import CeremoniesPage from './pages/ceremonies/ceremonies.component';
+import ProfilePage from './pages/profile/profile.component';
+import SettingsPage from './pages/settings/settings.component';
+import OrdersPage from './pages/orders/orders.component';
 
 import Banner from './components/banner/banner.component';
 import Header from './components/header/header.component';
 import SearchBar from './components/search-bar/search-bar.component';
 import Carousel from './components/carousel/carousel.component';
 import Footer from './components/footer/footer.component';
+import FloatingWhatsApp from './components/floating-whatsapp/floating-whatsapp.component';
 import SignInSignUpPage from './pages/sign-in-sign-up-page/sign-in-sign-up.component';
 import './App.css';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
@@ -83,9 +87,25 @@ class App extends React.Component {
                 (<Redirect to='/' />)
                 :
                 <SignInSignUpPage />} />
+            <Route exact path='/profile'
+              render={() => this.props.currentUser ?
+                <ProfilePage />
+                :
+                (<Redirect to='/signin' />)} />
+            <Route exact path='/settings'
+              render={() => this.props.currentUser ?
+                <SettingsPage />
+                :
+                (<Redirect to='/signin' />)} />
+            <Route exact path='/orders'
+              render={() => this.props.currentUser ?
+                <OrdersPage />
+                :
+                (<Redirect to='/signin' />)} />
           </Switch>
         </main>
         <Footer />
+        <FloatingWhatsApp />
       </div>
     )
   };

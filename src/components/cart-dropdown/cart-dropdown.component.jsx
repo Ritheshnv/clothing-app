@@ -9,7 +9,7 @@ import { toggleCartHidden } from '../../redux/cart/cart.actions';
 import './cart-dropdown.styles.scss';
 
 const CartDropdown = ({ cartItems, history, dispatch }) => (
-    <div className='fixed top-16 right-4 left-4 sm:absolute sm:top-full sm:right-0 sm:left-auto mt-2 w-auto sm:w-80 bg-white border border-gray-200 rounded-lg shadow-lg z-50'>
+    <div className='absolute top-full right-0 mt-2 w-72 sm:w-80 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-96 transform -translate-x-4 sm:translate-x-0'>
         <div className='max-h-64 overflow-y-auto p-4'>
             {
                 cartItems.length ? (

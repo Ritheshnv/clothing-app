@@ -36,6 +36,14 @@ class SignIn extends React.Component {
                 errorMessage = 'Please enter a valid email address.';
             } else if (error.code === 'auth/user-disabled') {
                 errorMessage = 'This account has been disabled. Please contact support.';
+            } else if (error.code === 'auth/too-many-requests') {
+                errorMessage = 'Too many failed login attempts. Please try again later or reset your password.';
+            } else if (error.code === 'auth/network-request-failed') {
+                errorMessage = 'Network error. Please check your internet connection and try again.';
+            } else if (error.code === 'auth/invalid-credential') {
+                errorMessage = 'Invalid email or password. Please check your credentials and try again.';
+            } else {
+                errorMessage = 'Sign in failed. Please check your email and password and try again.';
             }
             
             this.setState({ 
@@ -60,6 +68,12 @@ class SignIn extends React.Component {
                 errorMessage = 'Pop-up was blocked by your browser. Please allow pop-ups and try again.';
             } else if (error.code === 'auth/configuration-not-found') {
                 errorMessage = 'Google Sign-In is not properly configured. Please contact support.';
+            } else if (error.code === 'auth/network-request-failed') {
+                errorMessage = 'Network error. Please check your internet connection and try again.';
+            } else if (error.code === 'auth/too-many-requests') {
+                errorMessage = 'Too many requests. Please wait a moment and try again.';
+            } else {
+                errorMessage = 'Google Sign-In failed. Please try again.';
             }
             
             this.setState({ 

@@ -45,7 +45,12 @@ class SignUp extends React.Component {
         try {
             const { user } = await auth.createUserWithEmailAndPassword(email, password);
 
-            await createUserProfileDocument(user, { displayName });
+            try {
+                await createUserProfileDocument(user, { displayName });
+            } catch (profileError) {
+                console.warn('Profile creation failed, but account was created:', profileError);
+                // Don't throw error here as the account was successfully created
+            }
 
             this.setState({
                 displayName: '',
@@ -56,8 +61,23 @@ class SignUp extends React.Component {
             })
 
         } catch (error) {
+            let errorMessage = error.message;
+            
+            // Handle specific error codes
+            if (error.code === 'auth/email-already-in-use') {
+                errorMessage = 'An account with this email already exists. Please sign in instead.';
+            } else if (error.code === 'auth/invalid-email') {
+                errorMessage = 'Please enter a valid email address.';
+            } else if (error.code === 'auth/weak-password') {
+                errorMessage = 'Password is too weak. Please choose a stronger password.';
+            } else if (error.code === 'auth/operation-not-allowed') {
+                errorMessage = 'Email/password accounts are not enabled. Please contact support.';
+            } else if (error.code === 'auth/network-request-failed') {
+                errorMessage = 'Network error. Please check your internet connection and try again.';
+            }
+            
             this.setState({ 
-                error: error.message,
+                error: errorMessage,
                 loading: false 
             });
         }

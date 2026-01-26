@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import CheckoutItem from '../../components/checkout-item/checkout-item.component';
 import { selectCartItems, selectCartTotal } from '../../redux/cart/cart.selectors';
-import StripCheckoutButton from '../../components/stripe-button/stripe-button.component';
+import RazorpayButton from '../../components/razorpay-button/razorpay-button.component';
 import './checkout.styles.scss';
 
 const CheckoutPage = ({ cartItems, total }) => (
@@ -42,7 +42,7 @@ const CheckoutPage = ({ cartItems, total }) => (
                 </div>
                 <div className='flex justify-end'>
                     <div className='w-full max-w-xs'>
-                        <StripCheckoutButton price={total} />
+                        <RazorpayButton price={total} />
                     </div>
                 </div>
             </div>

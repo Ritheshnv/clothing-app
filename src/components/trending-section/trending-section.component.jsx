@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import './trending-section.styles.css';
 
 const TrendingSection = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [itemsPerView, setItemsPerView] = useState(4);
+    const [isHovered, setIsHovered] = useState(false);
     
     const trendingItems = [
         { id: 1, name: 'Elegant Silk Saree', price: 2500, image: 'https://i.ibb.co/KV18Ysr/floral-skirt.png' },
@@ -21,7 +23,7 @@ const TrendingSection = () => {
     useEffect(() => {
         const updateItemsPerView = () => {
             if (window.innerWidth < 768) {
-                setItemsPerView(2);
+                setItemsPerView(1);
             } else if (window.innerWidth < 1024) {
                 setItemsPerView(2);
             } else {
@@ -34,64 +36,68 @@ const TrendingSection = () => {
         return () => window.removeEventListener('resize', updateItemsPerView);
     }, []);
 
-    const maxIndex = trendingItems.length - itemsPerView;
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentIndex(prev => {
+                return (prev + 1) % (trendingItems.length - itemsPerView + 1);
+            });
+        }, isHovered ? 3000 : 2000);
 
-    const goLeft = () => {
-        setCurrentIndex(prev => prev > 0 ? prev - 1 : maxIndex);
-    };
-
-    const goRight = () => {
-        setCurrentIndex(prev => prev < maxIndex ? prev + 1 : 0);
-    };
+        return () => clearInterval(interval);
+    }, [itemsPerView, trendingItems.length, isHovered]);
 
     const getItemWidth = () => {
         return `${100 / itemsPerView}%`;
     };
 
+    const totalDots = trendingItems.length - itemsPerView + 1;
+
     return (
         <div className='py-8'>
-            <h2 className='text-2xl md:text-3xl font-bold text-center mb-8 text-gray-900'>Trending Now</h2>
+            <h2 className='text-2xl md:text-3xl font-bold text-center mb-8'>Trending Now</h2>
             <div className='mx-auto px-4 sm:px-6 lg:px-8'>
-                <div className='relative'>
-                    <button 
-                        onClick={goLeft}
-                        className='absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-gray-100 hover:bg-gray-200 rounded-full p-3 shadow-md transition-all'
-                    >
-                        <svg className='w-5 h-5 text-gray-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 19l-7-7 7-7' />
-                        </svg>
-                    </button>
-                    
-                    <div className='overflow-hidden mx-12'>
+                <div 
+                    className='relative'
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                >
+                    <div className='overflow-hidden'>
                         <div 
-                            className='flex transition-transform duration-150 ease-out'
+                            className='flex transition-transform duration-500 ease-out'
                             style={{ transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)` }}
                         >
                             {trendingItems.map((item) => (
-                                <div key={item.id} className='flex-shrink-0 px-3' style={{ width: getItemWidth() }}>
-                                    <div className='bg-white rounded-lg shadow-md overflow-hidden'>
+                                <Link 
+                                    key={item.id} 
+                                    to={`/product/${item.id}`}
+                                    className='flex-shrink-0 px-3 cursor-pointer' 
+                                    style={{ width: getItemWidth() }}
+                                >
+                                    <div className='bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow'>
                                         <div 
                                             className='h-48 bg-cover bg-center'
                                             style={{ backgroundImage: `url(${item.image})` }}
                                         />
                                         <div className='p-4'>
-                                            <h3 className='font-medium text-gray-900 text-sm mb-2 truncate'>{item.name}</h3>
-                                            <p className='text-lg font-bold text-gray-900'>₹{item.price}</p>
+                                            <h3 className='font-medium text-sm mb-2 truncate'>{item.name}</h3>
+                                            <p className='text-lg font-bold'>₹{item.price}</p>
                                         </div>
                                     </div>
-                                </div>
+                                </Link>
                             ))}
                         </div>
                     </div>
-                    
-                    <button 
-                        onClick={goRight}
-                        className='absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-gray-100 hover:bg-gray-200 rounded-full p-3 shadow-md transition-all'
-                    >
-                        <svg className='w-5 h-5 text-gray-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
-                        </svg>
-                    </button>
+                </div>
+                <div className='flex justify-center mt-6 space-x-2'>
+                    {Array.from({ length: totalDots }).map((_, index) => (
+                        <button
+                            key={index}
+                            onClick={() => setCurrentIndex(index)}
+                            className={`w-3 h-3 rounded-full transition-colors ${
+                                currentIndex === index ? 'bg-blue-600' : 'bg-gray-300'
+                            }`}
+                        />
+                    ))}
                 </div>
             </div>
         </div>

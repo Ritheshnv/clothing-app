@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import HomePage from './pages/homepage/homepage.component';
 import ShopPage from './pages/shoppage/shoppage.component';
 import CheckoutPage from './pages/checkout/checkout.component';
+import AddressPage from './pages/address/address.component';
 import ContactPage from './pages/contact/contact.component';
 import ProductDetailPage from './pages/product-detail/product-detail.component';
 import WeddingSareesPage from './pages/wedding-sarees/wedding-sarees.component';
@@ -27,96 +28,101 @@ import { setCurrentUser } from './redux/user/user.actions';
 
 class App extends React.Component {
 
-  unsubscribeFromAuth = null;
+ unsubscribeFromAuth = null;
 
-  componentDidMount() {
+ componentDidMount() {
 
-    const { setCurrentUser } = this.props;
+  const { setCurrentUser } = this.props;
 
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
-      if (userAuth) {
-        const userRef = await createUserProfileDocument(userAuth);
-        if (userRef) {
-          userRef.onSnapshot(snapshot => {
-            setCurrentUser({
-              id: snapshot.id,
-              ...snapshot.data()
-            })
-          })
-        } else {
-          setCurrentUser({
-            id: userAuth.uid,
-            displayName: userAuth.displayName,
-            email: userAuth.email
-          })
-        }
-      } else {
-        setCurrentUser(userAuth);
-      }
-    })
-  }
+  this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+   if (userAuth) {
+    const userRef = await createUserProfileDocument(userAuth);
+    if (userRef) {
+     userRef.onSnapshot(snapshot => {
+      setCurrentUser({
+       id: snapshot.id,
+       ...snapshot.data()
+      })
+     })
+    } else {
+     setCurrentUser({
+      id: userAuth.uid,
+      displayName: userAuth.displayName,
+      email: userAuth.email
+     })
+    }
+   } else {
+    setCurrentUser(userAuth);
+   }
+  })
+ }
 
-  componentWillUnmount() {
-    this.unsubscribeFromAuth();
-  }
+ componentWillUnmount() {
+  this.unsubscribeFromAuth();
+ }
 
-  render() {
-    const { location } = this.props;
-    const hideSearchBar = location.pathname === '/checkout';
-    const showCarousel = location.pathname === '/';
-    
-    return (
-      <div className="min-h-screen" style={{backgroundColor: '#FEF8F1'}}>
-        <Banner />
-        <Header />
-        {!hideSearchBar && !showCarousel && <SearchBar />}
-        {showCarousel && <Carousel />}
-        <main className="mx-auto px-4 sm:px-6 lg:px-8">
-          <Switch>
-            <Route exact path='/' component={HomePage} />
-            <Route exact path='/clothing-app' render={() => <Redirect to='/' />} />
-            <Route path='/shop' component={ShopPage} />
-            <Route exact path='/shop/wedding-sarees' component={WeddingSareesPage} />
-            <Route exact path='/shop/party-wears' component={PartyWearsPage} />
-            <Route exact path='/shop/ceremonies' component={CeremoniesPage} />
-            <Route exact path='/product/:id' component={ProductDetailPage} />
-            <Route exact path='/contact' component={ContactPage} />
-            <Route exact path='/checkout' component={CheckoutPage} />
-            <Route exact path='/signin'
-              render={() => this.props.currentUser ?
-                (<Redirect to='/' />)
-                :
-                <SignInSignUpPage />} />
-            <Route exact path='/profile'
-              render={() => this.props.currentUser ?
-                <ProfilePage />
-                :
-                (<Redirect to='/signin' />)} />
-            <Route exact path='/settings'
-              render={() => this.props.currentUser ?
-                <SettingsPage />
-                :
-                (<Redirect to='/signin' />)} />
-            <Route exact path='/orders'
-              render={() => this.props.currentUser ?
-                <OrdersPage />
-                :
-                (<Redirect to='/signin' />)} />
-          </Switch>
-        </main>
-        <Footer />
-        <FloatingWhatsApp />
-      </div>
-    )
-  };
+ render() {
+  const { location } = this.props;
+  const hideSearchBar = location.pathname === '/checkout' || location.pathname === '/orders' || location.pathname === '/address';
+  const showCarousel = location.pathname === '/';
+  
+  return (
+   <div className="min-h-screen">
+    <Banner />
+    <Header />
+    {!hideSearchBar && !showCarousel && <SearchBar />}
+    {showCarousel && <Carousel />}
+    <main className="mx-auto px-4 sm:px-6 lg:px-8">
+     <Switch>
+      <Route exact path='/' component={HomePage} />
+      <Route exact path='/clothing-app' render={() => <Redirect to='/' />} />
+      <Route path='/shop' component={ShopPage} />
+      <Route exact path='/shop/wedding-sarees' component={WeddingSareesPage} />
+      <Route exact path='/shop/party-wears' component={PartyWearsPage} />
+      <Route exact path='/shop/ceremonies' component={CeremoniesPage} />
+      <Route exact path='/product/:id' component={ProductDetailPage} />
+      <Route exact path='/contact' component={ContactPage} />
+      <Route exact path='/checkout' component={CheckoutPage} />
+      <Route exact path='/address'
+       render={() => this.props.currentUser ?
+        <AddressPage />
+        :
+        (<Redirect to='/signin' />)} />
+      <Route exact path='/signin'
+       render={() => this.props.currentUser ?
+        (<Redirect to='/' />)
+        :
+        <SignInSignUpPage />} />
+      <Route exact path='/profile'
+       render={() => this.props.currentUser ?
+        <ProfilePage />
+        :
+        (<Redirect to='/signin' />)} />
+      <Route exact path='/settings'
+       render={() => this.props.currentUser ?
+        <SettingsPage />
+        :
+        (<Redirect to='/signin' />)} />
+      <Route exact path='/orders'
+       render={() => this.props.currentUser ?
+        <OrdersPage />
+        :
+        (<Redirect to='/signin' />)} />
+     </Switch>
+    </main>
+    <Footer />
+    <FloatingWhatsApp />
+   </div>
+  )
+ };
 }
 
 const mapStateToProps = ({ user }) => ({
-  currentUser: user.currentUser
+ currentUser: user.currentUser
 })
 
 const mapDispatchToProps = dispatch => ({
-  setCurrentUser: user => dispatch(setCurrentUser(user))
+ setCurrentUser: user => dispatch(setCurrentUser(user))
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

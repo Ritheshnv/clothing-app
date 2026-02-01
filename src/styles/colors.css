@@ -1,0 +1,28 @@
+/* Color palette based on image analysis */
+:root {
+  /* Primary colors from images */
+  --primary-blue: #273579;
+  --primary-blue-light: #3a4a8c;
+  --primary-blue-dark: #1e2a5f;
+  
+  /* Neutral colors from logo */
+  --neutral-light: #d3d0cc;
+  --neutral-medium: #bebcb9;
+  --neutral-dark: #8a8784;
+  
+  /* Complementary colors */
+  --accent-gold: #d4af37;
+  --accent-gold-light: #f4d03f;
+  --warm-white: #faf9f7;
+  --soft-gray: #f5f4f2;
+  
+  /* Text colors */
+  --text-primary: #2c2c2c;
+  --text-secondary: #5a5a5a;
+  --text-light: #8a8a8a;
+  
+  /* Status colors */
+  --success: #27ae60;
+  --warning: #f39c12;
+  --error: #e74c3c;
+}

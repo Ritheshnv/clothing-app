@@ -5,11 +5,11 @@ import SearchBar from '../../components/search-bar/search-bar.component';
 import TrendingSection from '../../components/trending-section/trending-section.component';
 
 const HomePage = () => (
-    <div className="py-8">
-        <SearchBar />
-        <TrendingSection />
-        <Directory />
-    </div>
+  <div className="py-8">
+    <SearchBar />
+    <TrendingSection />
+    <Directory />
+  </div>
 )
 
 export default HomePage;

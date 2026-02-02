@@ -29,10 +29,23 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
           displayName,
           email,
           createdAt,
+          role: 'customer', // Default role for all users
           ...additionalData
         })
       } catch (error) {
         console.log('error while storing user', error.message);
+      }
+    } else {
+      // Add role to existing users who don't have it
+      const userData = snapshot.data();
+      if (!userData.role) {
+        try {
+          await userRef.update({
+            role: 'customer'
+          });
+        } catch (error) {
+          console.log('error updating user role', error.message);
+        }
       }
     }
     return userRef;

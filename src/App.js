@@ -20,6 +20,8 @@ import SearchBar from './components/search-bar/search-bar.component';
 import Carousel from './components/carousel/carousel.component';
 import Footer from './components/footer/footer.component';
 import FloatingWhatsApp from './components/floating-whatsapp/floating-whatsapp.component';
+import AdminLogin from './pages/admin/admin-login.component';
+import AdminDashboard from './pages/admin/admin-dashboard.component';
 import SignInSignUpPage from './pages/sign-in-sign-up-page/sign-in-sign-up.component';
 import './App.css';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
@@ -63,13 +65,14 @@ class App extends React.Component {
 
  render() {
   const { location } = this.props;
-  const hideSearchBar = location.pathname === '/checkout' || location.pathname === '/orders' || location.pathname === '/address';
+  const hideSearchBar = location.pathname === '/checkout' || location.pathname === '/orders' || location.pathname === '/address' || location.pathname.startsWith('/admin');
   const showCarousel = location.pathname === '/';
+  const isAdminPage = location.pathname.startsWith('/admin');
   
   return (
    <div className="min-h-screen">
-    <Banner />
-    <Header />
+    {!isAdminPage && <Banner />}
+    {!isAdminPage && <Header />}
     {!hideSearchBar && !showCarousel && <SearchBar />}
     {showCarousel && <Carousel />}
     <main className="mx-auto px-4 sm:px-6 lg:px-8">
@@ -108,10 +111,12 @@ class App extends React.Component {
         <OrdersPage />
         :
         (<Redirect to='/signin' />)} />
+      <Route exact path='/admin' component={AdminLogin} />
+      <Route exact path='/admin/dashboard' component={AdminDashboard} />
      </Switch>
     </main>
-    <Footer />
-    <FloatingWhatsApp />
+    {!isAdminPage && <Footer />}
+    {!isAdminPage && <FloatingWhatsApp />}
    </div>
   )
  };

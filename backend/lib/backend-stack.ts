@@ -5,6 +5,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as ses from 'aws-cdk-lib/aws-ses';
 import * as iam from 'aws-cdk-lib/aws-iam';
+import * as s3 from 'aws-cdk-lib/aws-s3';
 
 export class BackendStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -15,6 +16,16 @@ export class BackendStack extends cdk.Stack {
       partitionKey: { name: 'orderId', type: dynamodb.AttributeType.STRING },
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST
     });
+
+    // Products Table
+    const productsTable = new dynamodb.Table(this, 'ProductsTable', {
+      tableName: 'dihana-products',
+      partitionKey: { name: 'id', type: dynamodb.AttributeType.STRING },
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST
+    });
+
+    // Reference existing S3 Bucket
+    const imagesBucket = s3.Bucket.fromBucketName(this, 'DihanaCoutureBucket', 'dihana-couture');
 
     // SES Email Identity
     const emailIdentity = new ses.EmailIdentity(this, 'DihanaCoutureEmail', {
@@ -380,6 +391,129 @@ export class BackendStack extends cdk.Stack {
       resources: ['*']
     }));
 
+    // Create Product Lambda
+    const createProductLambda = new lambda.Function(this, 'CreateProductFunction', {
+      runtime: lambda.Runtime.NODEJS_18_X,
+      handler: 'index.handler',
+      environment: {
+        PRODUCTS_TABLE_NAME: productsTable.tableName,
+        BUCKET_NAME: imagesBucket.bucketName
+      },
+      code: lambda.Code.fromInline(`
+        const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
+        const { DynamoDBDocumentClient, PutCommand } = require('@aws-sdk/lib-dynamodb');
+        const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+        const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
+        
+        const dynamoClient = new DynamoDBClient({});
+        const dynamodb = DynamoDBDocumentClient.from(dynamoClient);
+        const s3Client = new S3Client({});
+
+        exports.handler = async (event) => {
+          try {
+            const productData = JSON.parse(event.body);
+            
+            // Save product to DynamoDB
+            await dynamodb.send(new PutCommand({
+              TableName: process.env.PRODUCTS_TABLE_NAME,
+              Item: {
+                ...productData,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+              }
+            }));
+            
+            return {
+              statusCode: 200,
+              headers: { 
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'POST, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type'
+              },
+              body: JSON.stringify({ message: 'Product created successfully' })
+            };
+          } catch (error) {
+            console.error('Error:', error);
+            return {
+              statusCode: 500,
+              headers: { 
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'POST, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type'
+              },
+              body: JSON.stringify({ error: error.message })
+            };
+          }
+        };
+      `)
+    });
+
+    productsTable.grantWriteData(createProductLambda);
+    
+    // Grant S3 permissions to Lambda functions
+    createProductLambda.addToRolePolicy(new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: ['s3:PutObject', 's3:PutObjectAcl'],
+      resources: [`arn:aws:s3:::dihana-couture/*`]
+    }));
+
+    // Get Upload URL Lambda
+    const getUploadUrlLambda = new lambda.Function(this, 'GetUploadUrlFunction', {
+      runtime: lambda.Runtime.NODEJS_18_X,
+      handler: 'index.handler',
+      environment: {
+        BUCKET_NAME: 'dihana-couture'
+      },
+      code: lambda.Code.fromInline(`
+        const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+        const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
+        
+        const s3Client = new S3Client({});
+
+        exports.handler = async (event) => {
+          try {
+            const { category, productId, fileName } = JSON.parse(event.body);
+            const key = \`sarees/\${category}/\${productId}/\${fileName}\`;
+            
+            const command = new PutObjectCommand({
+              Bucket: process.env.BUCKET_NAME,
+              Key: key,
+              ContentType: 'image/jpeg'
+            });
+            
+            const uploadUrl = await getSignedUrl(s3Client, command, { expiresIn: 3600 });
+            
+            return {
+              statusCode: 200,
+              headers: { 
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'POST, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type'
+              },
+              body: JSON.stringify({ uploadUrl, key })
+            };
+          } catch (error) {
+            console.error('Error:', error);
+            return {
+              statusCode: 500,
+              headers: { 
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'POST, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type'
+              },
+              body: JSON.stringify({ error: error.message })
+            };
+          }
+        };
+      `)
+    });
+
+    getUploadUrlLambda.addToRolePolicy(new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: ['s3:PutObject', 's3:PutObjectAcl'],
+      resources: [`arn:aws:s3:::dihana-couture/*`]
+    }));
+
     const api = new apigateway.RestApi(this, 'OrderTrackingApi', {
       restApiName: 'Dihana Order Tracking',
       defaultCorsPreflightOptions: {
@@ -397,5 +531,12 @@ export class BackendStack extends cdk.Stack {
     
     const userOrders = orders.addResource('user').addResource('{userId}');
     userOrders.addMethod('GET', new apigateway.LambdaIntegration(getUserOrdersLambda));
+
+    // Products API endpoints
+    const products = api.root.addResource('products');
+    products.addMethod('POST', new apigateway.LambdaIntegration(createProductLambda));
+    
+    const uploadUrl = api.root.addResource('upload-url');
+    uploadUrl.addMethod('POST', new apigateway.LambdaIntegration(getUploadUrlLambda));
   }
 }

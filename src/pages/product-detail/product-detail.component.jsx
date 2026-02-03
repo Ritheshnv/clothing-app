@@ -1,28 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { addItem } from '../../redux/cart/cart.actions';
+import { selectCollections } from '../../redux/shop/shop.selectors';
 import CustomButton from '../../components/custom-button/custom-button.component';
 
-const ProductDetailPage = ({ match, addItem }) => {
+const ProductDetailPage = ({ match, addItem, collections }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
-  
-  // Mock product data - in real app, fetch by ID
-  const product = {
-    id: parseInt(match.params.id),
-    name: 'Premium Fashion Item',
-    price: 85,
-    description: 'This is a premium quality fashion item made with the finest materials. Perfect for any occasion, combining style and comfort in one beautiful piece.',
-    images: [
-      'https://i.ibb.co/KV18Ysr/floral-skirt.png',
-      'https://i.ibb.co/0s3pdnc/adidas-nmd.png',
-      'https://i.ibb.co/XzcwL5s/black-shearling.png',
-      'https://i.ibb.co/ZYW3VTp/brown-brim.png'
-    ],
-    sizes: ['XS', 'S', 'M', 'L', 'XL'],
-    colors: ['Black', 'White', 'Navy', 'Gray']
-  };
+  const [product, setProduct] = useState(null);
+
+  useEffect(() => {
+    if (collections) {
+      // Find product across all collections
+      const productId = match.params.id;
+      let foundProduct = null;
+      
+      Object.values(collections).forEach(collection => {
+        const item = collection.items.find(item => item.id === productId);
+        if (item) {
+          foundProduct = item;
+        }
+      });
+      
+      setProduct(foundProduct);
+    }
+  }, [collections, match.params.id]);
+
+  if (!product) {
+    return (
+      <div className='max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center'>
+        <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto'></div>
+        <p className='mt-4'>Loading product...</p>
+      </div>
+    );
+  }
 
   const shareOnWhatsApp = () => {
     const productUrl = window.location.href;
@@ -38,24 +50,34 @@ const ProductDetailPage = ({ match, addItem }) => {
         <div>
           <div className='mb-4'>
             <img 
-              src={product.images[currentImageIndex]} 
-              alt={product.name}
+              src={product.subImages && product.subImages.length > 0 ? product.subImages[currentImageIndex] : product.imageUrl} 
+              alt={product.alternateText || product.name}
               className='w-full h-96 object-cover rounded-lg'
             />
           </div>
-          <div className='grid grid-cols-4 gap-2'>
-            {product.images.map((image, index) => (
+          {product.subImages && product.subImages.length > 0 && (
+            <div className='grid grid-cols-4 gap-2'>
               <img
-                key={index}
-                src={image}
-                alt={`${product.name} ${index + 1}`}
+                src={product.imageUrl}
+                alt={`${product.name} main`}
                 className={`h-20 object-cover rounded cursor-pointer ${
-                  index === currentImageIndex ? 'ring-2 ring-gray-900' : ''
+                  currentImageIndex === -1 ? 'ring-2 ring-gray-900' : ''
                 }`}
-                onClick={() => setCurrentImageIndex(index)}
+                onClick={() => setCurrentImageIndex(-1)}
               />
-            ))}
-          </div>
+              {product.subImages.map((image, index) => (
+                <img
+                  key={index}
+                  src={image}
+                  alt={`${product.name} ${index + 1}`}
+                  className={`h-20 object-cover rounded cursor-pointer ${
+                    index === currentImageIndex ? 'ring-2 ring-gray-900' : ''
+                  }`}
+                  onClick={() => setCurrentImageIndex(index)}
+                />
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Product Info */}
@@ -68,10 +90,26 @@ const ProductDetailPage = ({ match, addItem }) => {
             <p className=''>{product.description}</p>
           </div>
 
+          {product.offers && product.offers.value > 0 && (
+            <div className='mb-6 p-3 bg-green-50 border border-green-200 rounded-lg'>
+              <p className='text-green-800 font-medium'>
+                {product.offers.type === 'percentage' 
+                  ? `${product.offers.value}% OFF` 
+                  : `₹${product.offers.value} OFF`}
+              </p>
+            </div>
+          )}
+
+          {product.stock && (
+            <div className='mb-6'>
+              <p className='text-sm text-gray-600'>Stock: {product.stock} available</p>
+            </div>
+          )}
+
           <div className='mb-6'>
             <h3 className='text-lg font-medium mb-2'>Size</h3>
             <div className='flex space-x-2'>
-              {product.sizes.map(size => (
+              {['XS', 'S', 'M', 'L', 'XL'].map(size => (
                 <button
                   key={size}
                   onClick={() => setSelectedSize(size)}
@@ -90,7 +128,7 @@ const ProductDetailPage = ({ match, addItem }) => {
           <div className='mb-8'>
             <h3 className='text-lg font-medium mb-2'>Color</h3>
             <div className='flex space-x-2'>
-              {product.colors.map(color => (
+              {['Black', 'White', 'Navy', 'Gray'].map(color => (
                 <button
                   key={color}
                   onClick={() => setSelectedColor(color)}
@@ -126,8 +164,12 @@ const ProductDetailPage = ({ match, addItem }) => {
   );
 };
 
+const mapStateToProps = (state) => ({
+  collections: selectCollections(state)
+});
+
 const mapDispatchToProps = dispatch => ({
   addItem: item => dispatch(addItem(item))
 });
 
-export default connect(null, mapDispatchToProps)(ProductDetailPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ProductDetailPage);

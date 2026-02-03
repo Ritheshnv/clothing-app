@@ -514,6 +514,57 @@ export class BackendStack extends cdk.Stack {
       resources: [`arn:aws:s3:::dihana-couture/*`]
     }));
 
+    // Get Products Lambda
+    const getProductsLambda = new lambda.Function(this, 'GetProductsFunction', {
+      runtime: lambda.Runtime.NODEJS_18_X,
+      handler: 'index.handler',
+      environment: {
+        PRODUCTS_TABLE_NAME: productsTable.tableName
+      },
+      code: lambda.Code.fromInline(`
+        const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
+        const { DynamoDBDocumentClient, ScanCommand } = require('@aws-sdk/lib-dynamodb');
+        
+        const dynamoClient = new DynamoDBClient({});
+        const dynamodb = DynamoDBDocumentClient.from(dynamoClient);
+
+        exports.handler = async (event) => {
+          try {
+            const result = await dynamodb.send(new ScanCommand({
+              TableName: process.env.PRODUCTS_TABLE_NAME,
+              FilterExpression: 'isActive = :isActive',
+              ExpressionAttributeValues: {
+                ':isActive': true
+              }
+            }));
+            
+            return {
+              statusCode: 200,
+              headers: { 
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type'
+              },
+              body: JSON.stringify(result.Items || [])
+            };
+          } catch (error) {
+            console.error('Error:', error);
+            return {
+              statusCode: 500,
+              headers: { 
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type'
+              },
+              body: JSON.stringify({ error: error.message })
+            };
+          }
+        };
+      `)
+    });
+
+    productsTable.grantReadData(getProductsLambda);
+
     const api = new apigateway.RestApi(this, 'OrderTrackingApi', {
       restApiName: 'Dihana Order Tracking',
       defaultCorsPreflightOptions: {
@@ -535,6 +586,7 @@ export class BackendStack extends cdk.Stack {
     // Products API endpoints
     const products = api.root.addResource('products');
     products.addMethod('POST', new apigateway.LambdaIntegration(createProductLambda));
+    products.addMethod('GET', new apigateway.LambdaIntegration(getProductsLambda));
     
     const uploadUrl = api.root.addResource('upload-url');
     uploadUrl.addMethod('POST', new apigateway.LambdaIntegration(getUploadUrlLambda));

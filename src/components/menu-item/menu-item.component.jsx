@@ -8,11 +8,10 @@ const MenuItem = ({ title, imageUrl, size, history, linkUrl, match }) => (
     className={`${size === 'large' ? 'md:col-span-2' : ''} relative h-64 md:h-80 lg:h-96 rounded-lg overflow-hidden cursor-pointer group transform transition-transform hover:scale-105 shadow-lg`} 
     onClick={() => history.push(`${match.url}${linkUrl}`)}
   >
-    <div 
-      className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform group-hover:scale-110" 
-      style={{
-        backgroundImage: `url(${imageUrl})`
-      }} 
+    <img 
+      src={imageUrl}
+      alt={title}
+      className="absolute inset-0 w-full h-full object-cover transition-transform group-hover:scale-110" 
     />
     <div className="absolute inset-0 bg-black bg-opacity-30 group-hover:bg-opacity-20 transition-all" />
     <div className="absolute inset-0 flex flex-col items-center justify-center text-white">

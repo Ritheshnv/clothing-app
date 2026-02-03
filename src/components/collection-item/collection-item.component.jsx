@@ -9,6 +9,8 @@ import CustomButton from '../custom-button/custom-button.component';
 
 const CollectionItem = ({ item, addItem, cartItems }) => {
   const { id, name, price, imageUrl } = item;
+  console.log('CollectionItem - item:', item);
+  console.log('CollectionItem - imageUrl:', imageUrl);
   
   const isInCart = cartItems.find(cartItem => cartItem.id === id);
   
@@ -22,13 +24,10 @@ const CollectionItem = ({ item, addItem, cartItems }) => {
   return (
     <div className='group relative rounded-lg shadow-sm hover:shadow-md transition-shadow' style={{backgroundColor: '#FEF8F1'}}>
       <div className='relative'>
-        <div
-          className='aspect-w-1 aspect-h-1 w-full h-64 md:h-80 bg-gray-200 rounded-t-lg overflow-hidden group-hover:opacity-75 transition-opacity'
-          style={{
-            backgroundImage: `url(${imageUrl})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
-          }}
+        <img 
+          src={imageUrl}
+          alt={name}
+          className='aspect-w-1 aspect-h-1 w-full h-64 md:h-80 bg-gray-200 rounded-t-lg object-cover group-hover:opacity-75 transition-opacity'
         />
         <Link to={`/product/${id}`} className='absolute top-2 right-2 bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full px-3 py-2 transition-all opacity-0 group-hover:opacity-100 flex items-center space-x-1'>
           <svg className='w-4 h-4 ' fill='none' stroke='currentColor' viewBox='0 0 24 24'>

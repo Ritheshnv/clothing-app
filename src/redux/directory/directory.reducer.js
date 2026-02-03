@@ -2,33 +2,33 @@ const INITIAL_STATE = {
   sections: [
     {
       title: 'Sangeeth',
-      imageUrl: 'https://i.ibb.co/cvpntL1/hats.png',
+      imageUrl: 'https://d3jifdeyjpus7e.cloudfront.net/sarees/silk/silk-1/main.jpg',
       id: 1,
-      linkUrl: 'shop/hats'
+      linkUrl: 'shop/silk'
     },
     {
       title: 'Haldi',
-      imageUrl: 'https://i.ibb.co/px2tCc3/jackets.png',
+      imageUrl: 'https://d3jifdeyjpus7e.cloudfront.net/sarees/cotton/cotton-1/main.jpg',
       id: 2,
-      linkUrl: 'shop/jackets'
+      linkUrl: 'shop/cotton'
     },
     {
       title: 'Reception Trends',
-      imageUrl: 'https://i.ibb.co/0jqHpnp/sneakers.png',
+      imageUrl: 'https://d3jifdeyjpus7e.cloudfront.net/sarees/silk/silk-2/main.jpg',
       id: 3,
-      linkUrl: 'shop/sneakers'
+      linkUrl: 'shop/silk'
     },
     {
       title: 'Wedding Flash',
-      imageUrl: 'https://i.ibb.co/GCCdy8t/womens.png',
+      imageUrl: 'https://d3jifdeyjpus7e.cloudfront.net/sarees/silk/silk-4/main.jpg',
       id: 4,
-      linkUrl: 'shop/womens'
+      linkUrl: 'shop/silk'
     },
     {
       title: 'Party Freak',
-      imageUrl: 'https://i.ibb.co/R70vBrQ/men.png',
+      imageUrl: 'https://d3jifdeyjpus7e.cloudfront.net/sarees/cotton/cotton-2/main.jpg',
       id: 5,
-      linkUrl: 'shop/mens'
+      linkUrl: 'shop/cotton'
     }
   ]
 };

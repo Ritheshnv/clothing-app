@@ -80,7 +80,7 @@ const Header = ({ currentUser, hidden }) => {
           
           {/* Logo - centered */}
           <Link className='absolute left-1/2 transform -translate-x-1/2 flex items-center' to="/">
-            <img src={logo} alt='Dihana Logo' className='h-16 w-auto md:h-20' />
+            <img src={logo} alt='Dihana Logo' className='h-16 w-auto md:h-20 drop-shadow-lg' />
           </Link>
           
           {/* Cart icon - always on right */}

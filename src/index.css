@@ -9,11 +9,53 @@ html, body, #root {
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Cormorant Garamond', 'Playfair Display', serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  background-color: white;
+}
+
+/* Apply font families globally */
+* {
+  font-family: 'Cormorant Garamond', serif;
+}
+
+/* Headings use Playfair Display for elegance */
+h1, h2, h3, h4, h5, h6,
+.heading,
+.title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 500;
+}
+
+/* Navigation and buttons */
+nav, button, .btn,
+.nav-link, .menu-item,
+.custom-button {
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+}
+
+/* Form elements */
+input, textarea, select,
+.form-input, .form-control {
+  font-family: 'Cormorant Garamond', serif;
+}
+
+/* Product and content text */
+.product-name, .product-title,
+.collection-title, .section-title,
+.card-title, .item-title {
+  font-family: 'Playfair Display', serif;
+}
+
+/* Body text and descriptions */
+p, span, div, .description,
+.product-description, .text-content {
+  font-family: 'Cormorant Garamond', serif;
 }
 
 code {

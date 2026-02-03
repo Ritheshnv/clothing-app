@@ -65,7 +65,7 @@ class App extends React.Component {
 
  render() {
   const { location } = this.props;
-  const hideSearchBar = location.pathname === '/checkout' || location.pathname === '/orders' || location.pathname === '/address' || location.pathname.startsWith('/admin');
+  const hideSearchBar = location.pathname === '/checkout' || location.pathname === '/orders' || location.pathname === '/address' || location.pathname === '/signin' || location.pathname.startsWith('/admin');
   const showCarousel = location.pathname === '/';
   const isAdminPage = location.pathname.startsWith('/admin');
   
@@ -75,7 +75,7 @@ class App extends React.Component {
     {!isAdminPage && <Header />}
     {!hideSearchBar && !showCarousel && <SearchBar />}
     {showCarousel && <Carousel />}
-    <main className="mx-auto px-4 sm:px-6 lg:px-8">
+    <main className="mx-auto px-2">
      <Switch>
       <Route exact path='/' component={HomePage} />
       <Route exact path='/clothing-app' render={() => <Redirect to='/' />} />

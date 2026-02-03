@@ -149,8 +149,8 @@ const Directory = () => {
       </section>
 
       {/* Shop by Price */}
-      <section className="px-4">
-        <div className="text-center mb-8">
+      <section>
+        <div className="text-center mb-8 px-4">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Shop by Price</h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">Find the perfect saree within your budget, from affordable elegance to luxury collections.</p>
         </div>

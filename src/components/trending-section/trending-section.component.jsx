@@ -86,8 +86,8 @@ const TrendingSection = ({ collections }) => {
 
     return (
         <div className='py-8'>
-            <h2 className='text-2xl md:text-3xl font-bold text-center mb-8'>Trending Now</h2>
-            <div className='mx-auto px-4 sm:px-6 lg:px-8'>
+            <h2 className='text-2xl md:text-3xl font-bold text-center mb-8 px-4'>Trending Now</h2>
+            <div className='mx-auto'>
                 <div 
                     className='relative'
                     onMouseEnter={() => setIsHovered(true)}
@@ -102,7 +102,7 @@ const TrendingSection = ({ collections }) => {
                                 <Link 
                                     key={item.id} 
                                     to={`/shop/${item.category}`}
-                                    className='flex-shrink-0 px-3 cursor-pointer' 
+                                    className='flex-shrink-0 px-1 cursor-pointer' 
                                     style={{ width: getItemWidth() }}
                                 >
                                     <div className='bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow'>

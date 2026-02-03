@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const history = useHistory();
   
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm.trim()) {
-      window.location.href = `/shop?search=${encodeURIComponent(searchTerm)}`;
+      history.push(`/shop?search=${encodeURIComponent(searchTerm.trim())}`);
     }
   };
 

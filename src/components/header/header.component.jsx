@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import logo from '../../assets/1000371420.png';
+import logo from '../../assets/dihana.png';
 import { auth } from '../../firebase/firebase.utils';
 import CartIcon from '../cart-icon/cart-icon.component';
 import CartDropdown from '../cart-dropdown/cart-dropdown.component';
@@ -80,7 +80,7 @@ const Header = ({ currentUser, hidden }) => {
           
           {/* Logo - centered */}
           <Link className='absolute left-1/2 transform -translate-x-1/2 flex items-center' to="/">
-            <img src={logo} alt='Dihana Logo' className='h-16 w-auto md:h-20 drop-shadow-lg' />
+            <img src={logo} alt='Dihana Logo' className='h-16 w-auto md:h-20' />
           </Link>
           
           {/* Cart icon - always on right */}

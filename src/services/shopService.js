@@ -42,8 +42,13 @@ export const fetchProducts = async () => {
         subImages: product.subImages?.map(img => `${CLOUDFRONT_URL}/${img}`) || [],
         stock: product.stock,
         offers: product.offers,
-        isActive: product.isActive
+        isActive: product.isActive,
+        tag: product.tag
       });
+      
+      if (product.tag) {
+        console.log(`Product ${product.id} has tag: ${product.tag}`);
+      }
     });
     
     console.log('Transformed data:', transformedData);
@@ -57,14 +62,14 @@ export const fetchProducts = async () => {
 
 const getCategoryTitle = (category) => {
   const categoryTitles = {
-    silk: 'Wedding Flash',
-    cotton: 'Reception Trends', 
-    party: 'Party Freak',
+    silk: 'Silk Sarees',
+    cotton: 'Cotton Sarees', 
+    party: 'Party Wear',
     ceremony: 'Ceremonies',
     haldi: 'Haldi',
     sangeeth: 'Sangeeth',
     reception: 'Reception Trends',
-    wedding: 'Wedding Flash'
+    wedding: 'Wedding Sarees'
   };
   return categoryTitles[category] || category.charAt(0).toUpperCase() + category.slice(1);
 };

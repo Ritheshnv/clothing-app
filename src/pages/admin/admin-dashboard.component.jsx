@@ -6,6 +6,7 @@ const AdminDashboard = ({ currentUser }) => {
   const [activeTab, setActiveTab] = useState('orders');
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [migrationStatus, setMigrationStatus] = useState('');
   const [productForm, setProductForm] = useState({
     id: '',
     title: '',
@@ -13,6 +14,7 @@ const AdminDashboard = ({ currentUser }) => {
     price: '',
     stock: '',
     category: '',
+    tag: '',
     alternateText: '',
     offerType: 'percentage',
     offerValue: '',
@@ -177,6 +179,7 @@ const AdminDashboard = ({ currentUser }) => {
         },
         stock: parseInt(formData.stock),
         category: formData.category,
+        tag: formData.tag,
         alternateText: formData.alternateText,
         mainImageKey: mainImageKey,
         subImages: subImageKeys,
@@ -250,6 +253,30 @@ const AdminDashboard = ({ currentUser }) => {
     history.push('/');
   };
 
+  const migrateProducts = async () => {
+    setMigrationStatus('Starting migration...');
+    try {
+      const response = await fetch('https://an4mjc3sya.execute-api.us-east-1.amazonaws.com/prod/products');
+      const products = await response.json();
+      
+      setMigrationStatus(`Found ${products.length} products. Updating...`);
+      
+      for (const product of products) {
+        if (!product.tag) {
+          await fetch(`https://an4mjc3sya.execute-api.us-east-1.amazonaws.com/prod/products/${product.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ...product, tag: '' })
+          });
+        }
+      }
+      
+      setMigrationStatus('Migration completed successfully!');
+    } catch (error) {
+      setMigrationStatus(`Migration failed: ${error.message}`);
+    }
+  };
+
   const getStatusColor = (status) => {
     const colors = {
       placed: 'bg-blue-100 text-blue-800',
@@ -314,6 +341,16 @@ const AdminDashboard = ({ currentUser }) => {
                 }`}
               >
                 Upload Status
+              </button>
+              <button
+                onClick={() => setActiveTab('migration')}
+                className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                  activeTab === 'migration'
+                    ? 'border-indigo-500 text-indigo-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                Migration
               </button>
             </nav>
           </div>
@@ -470,17 +507,32 @@ const AdminDashboard = ({ currentUser }) => {
                     </div>
                     
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Category (Collection)</label>
                       <input
                         type="text"
                         name="category"
                         value={productForm.category}
                         onChange={handleProductChange}
-                        placeholder="silk"
+                        placeholder="silk, cotton"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                         required
                       />
                     </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Tag (Display Category)</label>
+                    <select
+                      name="tag"
+                      value={productForm.tag}
+                      onChange={handleProductChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                    >
+                      <option value="">None</option>
+                      <option value="trending">Trending Now</option>
+                      <option value="bestseller">Best Seller</option>
+                      <option value="wedding">Wedding Selection</option>
+                    </select>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -618,6 +670,29 @@ const AdminDashboard = ({ currentUser }) => {
                         </p>
                       </div>
                     ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Migration Tab */}
+          {activeTab === 'migration' && (
+            <div className="bg-white overflow-hidden shadow rounded-lg">
+              <div className="px-4 py-5 sm:p-6">
+                <h2 className="text-lg font-medium text-gray-900 mb-4">Product Migration</h2>
+                <p className="text-gray-600 mb-4">Add the 'tag' field to existing products in the database.</p>
+                
+                <button
+                  onClick={migrateProducts}
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-md text-sm font-medium"
+                >
+                  Run Migration
+                </button>
+                
+                {migrationStatus && (
+                  <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-md">
+                    <p className="text-blue-800">{migrationStatus}</p>
                   </div>
                 )}
               </div>

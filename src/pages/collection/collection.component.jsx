@@ -8,8 +8,14 @@ import { connect } from 'react-redux';
 const CollectionPage = ({ collection }) => {
   if (!collection) {
     return (
-      <div className='max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8'>
-        <h2 className='text-3xl md:text-4xl font-bold mb-8 text-center'>Collection not found</h2>
+      <div className='max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center min-h-[60vh]'>
+        <div className='text-6xl animate-bounce'>👗</div>
+        <div className='flex space-x-2 mt-4'>
+          <span className='text-4xl animate-pulse' style={{animationDelay: '0s'}}>✨</span>
+          <span className='text-4xl animate-pulse' style={{animationDelay: '0.2s'}}>💫</span>
+          <span className='text-4xl animate-pulse' style={{animationDelay: '0.4s'}}>⭐</span>
+        </div>
+        <p className='text-xl text-gray-600 mt-6 animate-pulse'>Loading beautiful collection...</p>
       </div>
     );
   }

@@ -6,8 +6,6 @@ import CustomButton from '../../components/custom-button/custom-button.component
 
 const ProductDetailPage = ({ match, addItem, collections }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [selectedSize, setSelectedSize] = useState('');
-  const [selectedColor, setSelectedColor] = useState('');
   const [product, setProduct] = useState(null);
 
   useEffect(() => {
@@ -107,45 +105,33 @@ const ProductDetailPage = ({ match, addItem, collections }) => {
           )}
 
           <div className='mb-6'>
-            <h3 className='text-lg font-medium mb-2'>Size</h3>
-            <div className='flex space-x-2'>
-              {['XS', 'S', 'M', 'L', 'XL'].map(size => (
-                <button
-                  key={size}
-                  onClick={() => setSelectedSize(size)}
-                  className={`px-4 py-2 border rounded transition-colors ${
-                    selectedSize === size 
-                      ? 'border-gray-900 bg-gray-900 text-white' 
-                      : 'border-gray-300 hover:border-gray-900'
-                  }`}
-                >
-                  {size}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className='mb-8'>
-            <h3 className='text-lg font-medium mb-2'>Color</h3>
-            <div className='flex space-x-2'>
-              {['Black', 'White', 'Navy', 'Gray'].map(color => (
-                <button
-                  key={color}
-                  onClick={() => setSelectedColor(color)}
-                  className={`px-4 py-2 border rounded transition-colors ${
-                    selectedColor === color 
-                      ? 'border-gray-900 bg-gray-900 text-white' 
-                      : 'border-gray-300 hover:border-gray-900'
-                  }`}
-                >
-                  {color}
-                </button>
-              ))}
+            <h3 className='text-lg font-medium mb-3'>Product Details</h3>
+            <div className='space-y-2 text-gray-700'>
+              <div className='flex'>
+                <span className='font-medium w-32'>Fabric:</span>
+                <span>{product.fabric || 'Pure Silk/Cotton'}</span>
+              </div>
+              <div className='flex'>
+                <span className='font-medium w-32'>Length:</span>
+                <span>{product.length || '5.5 meters'}</span>
+              </div>
+              <div className='flex'>
+                <span className='font-medium w-32'>Blouse Piece:</span>
+                <span>{product.blousePiece || '0.8 meters'}</span>
+              </div>
+              <div className='flex'>
+                <span className='font-medium w-32'>Wash Care:</span>
+                <span>{product.washCare || 'Dry clean recommended'}</span>
+              </div>
+              <div className='flex'>
+                <span className='font-medium w-32'>Occasion:</span>
+                <span>{product.occasion || 'Wedding, Party, Festival'}</span>
+              </div>
             </div>
           </div>
 
           <div className='flex space-x-4'>
-            <CustomButton onClick={() => addItem({...product, selectedSize, selectedColor})}>
+            <CustomButton onClick={() => addItem(product)}>
               Add to Cart
             </CustomButton>
             <button

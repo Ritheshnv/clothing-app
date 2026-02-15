@@ -17,6 +17,7 @@ import OrdersPage from './pages/orders/orders.component';
 import Banner from './components/banner/banner.component';
 import Header from './components/header/header.component';
 import SearchBar from './components/search-bar/search-bar.component';
+import Stories from './components/stories/stories.component';
 import Carousel from './components/carousel/carousel.component';
 import Footer from './components/footer/footer.component';
 import FloatingWhatsApp from './components/floating-whatsapp/floating-whatsapp.component';
@@ -65,7 +66,7 @@ class App extends React.Component {
 
  render() {
   const { location } = this.props;
-  const hideSearchBar = location.pathname === '/checkout' || location.pathname === '/orders' || location.pathname === '/address' || location.pathname === '/signin' || location.pathname.startsWith('/admin');
+  const hideSearchBar = location.pathname === '/checkout' || location.pathname === '/orders' || location.pathname === '/address' || location.pathname === '/signin' || location.pathname === '/contact' || location.pathname.startsWith('/admin');
   const showCarousel = location.pathname === '/';
   const isAdminPage = location.pathname.startsWith('/admin');
   
@@ -74,6 +75,7 @@ class App extends React.Component {
     {!isAdminPage && <Banner />}
     {!isAdminPage && <Header />}
     {!hideSearchBar && !showCarousel && <SearchBar />}
+    {showCarousel && <Stories />}
     {showCarousel && <Carousel />}
     <main className="mx-auto px-2">
      <Switch>

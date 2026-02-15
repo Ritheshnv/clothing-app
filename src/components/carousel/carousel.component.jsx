@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { useHistory } from 'react-router-dom';
 import { selectCollectionsForPreview, selectIsCollectionFetching } from '../../redux/shop/shop.selectors';
 
 const Carousel = ({ collections, isLoading }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [slides, setSlides] = useState([]);
+  const history = useHistory();
 
   useEffect(() => {
     console.log('Carousel collections:', collections);
@@ -16,7 +18,8 @@ const Carousel = ({ collections, isLoading }) => {
         const firstItem = collection.items && collection.items[0];
         return {
           title: collection.title,
-          image: firstItem ? firstItem.imageUrl : 'https://dihana-couture.s3.us-east-1.amazonaws.com/placeholder.jpg'
+          image: firstItem ? firstItem.imageUrl : 'https://dihana-couture.s3.us-east-1.amazonaws.com/placeholder.jpg',
+          link: `/shop/${collection.routeName}`
         };
       }).slice(0, 4);
       console.log('Generated slides:', carouselSlides);
@@ -26,11 +29,15 @@ const Carousel = ({ collections, isLoading }) => {
       setSlides([
         {
           title: "Cotton Collection",
-          image: "https://d3jifdeyjpus7e.cloudfront.net/sarees/cotton/cotton-2/main.jpg"
+          description: "Breathable comfort meets timeless elegance. Perfect for everyday grace.",
+          image: "https://d3jifdeyjpus7e.cloudfront.net/sarees/cotton/cotton-2/main.jpg",
+          link: "/shop/cotton"
         },
         {
           title: "Silk Collection", 
-          image: "https://d3jifdeyjpus7e.cloudfront.net/sarees/silk/silk-4/main.jpg"
+          description: "Luxurious silk sarees that embody tradition and sophistication.",
+          image: "https://d3jifdeyjpus7e.cloudfront.net/sarees/silk/silk-4/main.jpg",
+          link: "/shop/silk"
         }
       ]);
     }
@@ -68,7 +75,7 @@ const Carousel = ({ collections, isLoading }) => {
   return (
     <div className='py-8'>
       <div className='w-full bg-white shadow-sm overflow-hidden'>
-        <div className='relative h-80 md:h-96'>
+        <div className='relative h-80 md:h-96 cursor-pointer' onClick={() => history.push(slides[currentSlide].link)}>
           <img 
             src={slides[currentSlide].image} 
             alt={slides[currentSlide].title}
@@ -78,21 +85,15 @@ const Carousel = ({ collections, isLoading }) => {
               e.target.src = 'https://via.placeholder.com/800x400/cccccc/666666?text=Image+Not+Available';
             }}
           />
-          <div className='absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center'>
-            <h2 className='text-white text-2xl md:text-4xl font-bold text-center px-4'>
+          <div className='absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center px-4'>
+            <h2 className='text-white text-3xl md:text-5xl font-bold text-center mb-3' style={{fontFamily: 'Georgia, serif'}}>
               {slides[currentSlide].title}
             </h2>
-          </div>
-          <div className='absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2'>
-            {slides.map((_, index) => (
-              <button
-                key={index}
-                className={`w-3 h-3 rounded-full transition-colors ${
-                  index === currentSlide ? 'bg-white' : 'bg-white bg-opacity-50'
-                }`}
-                onClick={() => setCurrentSlide(index)}
-              />
-            ))}
+            {slides[currentSlide].description && (
+              <p className='text-white text-sm md:text-lg text-center max-w-2xl' style={{fontFamily: 'Playfair Display, serif', fontStyle: 'italic'}}>
+                {slides[currentSlide].description}
+              </p>
+            )}
           </div>
         </div>
       </div>
